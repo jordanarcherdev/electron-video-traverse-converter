@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>Traverse Converter</h1>
+
+    <form>
+      <input type="file" webkitdirectory directory multiple />
+      <select id="formats" name="format">
+        <option value="mp4">mp4</option>
+        <option value="mkv">mkv</option>
+        <option value="mov">mov</option>
+        <option value="avi">avi</option>
+        <option value="wmv">wmv</option>
+        <option value="mpeg">mpeg</option>
+      </select>
+      <button type="submit">GO!</button>
+    </form>
+
+<script>
+  const electron = require('electron');
+  const { ipcRenderer } = electron;
+
+  document.querySelector('form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    let video = {};
+    video.path = document.querySelector('input').files[0].path;
+    var selected = document.getElementById('formats');
+    video.format = selected.options[selected.selectedIndex].value
+    console.log(video.path);
+    console.log(video.format);
+    console.log(video);
+
+    ipcRenderer.send('file:submit', video);
+  });
+</script>
+
+  </body>
+</html>
